@@ -107,6 +107,11 @@ namespace TGC.MonoGame.TP
         ///     Se debe escribir toda la logica de computo del modelo, asi como tambien verificar entradas del usuario y reacciones
         ///     ante ellas.
         /// </summary>
+
+        public Vector3 pos { get; set; } = Vector3.Zero;
+
+        public Vector3 otherPos { get; set; }
+
         protected override void Update(GameTime gameTime)
         {
             // Aca deberiamos poner toda la logica de actualizacion del juego.
@@ -117,11 +122,24 @@ namespace TGC.MonoGame.TP
                 //Salgo del juego.
                 Exit();
             }
-            
+            if (Keyboard.GetState().IsKeyDown(Keys.D)){
+                pos += Vector3.Right * 30f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W)){
+                pos += Vector3.Up * 30f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S)){
+                pos += Vector3.Down * 30f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.A)){
+                pos += Vector3.Left * 30f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
             // Basado en el tiempo que paso se va generando una rotacion.
             Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
-            World = Matrix.CreateRotationY(Rotation);
+            //World = Matrix.CreateRotationY(Rotation);
+            World = Matrix.CreateTranslation(pos); //Matrix.CreateRotationZ(Rotation) * Matrix.CreateScale(1f/Rotation, Rotation, 1f);
 
             base.Update(gameTime);
         }
